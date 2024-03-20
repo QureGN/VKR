@@ -1,0 +1,16 @@
+.wrap{
+    margin-top: 50px;
+    display: flex;
+    justify-content: space-between;
+    width: 350px;
+    margin-right: 50px;
+}
+
+.border{
+    width: 150px;
+    border: 1px solid #D76445;
+    border-radius: 30px;
+    text-align: center;
+    text-decoration: none;
+    color: black;
+}

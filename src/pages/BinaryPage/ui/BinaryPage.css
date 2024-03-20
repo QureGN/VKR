@@ -1,0 +1,26 @@
+.wrapstorage{
+    display:flex;
+}
+
+.wrapheader1{
+    font-size: 40px;
+    margin: 10px;
+    
+}
+
+.breadwrap{
+    margin: 10px;
+}
+
+.wrapsearch{
+    display: flex;
+}
+
+.inputstorage{
+    margin: 7px 30px;
+}
+
+.stor{
+    width: 100%;
+    margin: 20px;
+}

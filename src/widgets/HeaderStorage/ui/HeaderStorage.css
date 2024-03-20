@@ -1,0 +1,44 @@
+.navbarStorage{
+    width: 200px;
+    height: 100%;
+    background-color: #1455412b;
+    position: fixed;
+}
+
+.wrapheader{
+    width: 200px;
+}
+
+.avat{
+    margin-top: 30px;
+    display: flex;
+    padding: 10px 10px 10px 10px;
+}
+
+.but{
+    margin-top: 70px;
+    padding: 10px;
+}
+
+.storage{
+    margin-top:20px;
+    padding: 25px;
+}
+
+.plus{
+    margin-left: 25px;
+}
+
+.lalal{
+    color: black;
+}
+
+.log{
+    margin-left: 20px ;
+    margin-top: 7px;
+}
+
+.sv{
+    margin-left: 20px ;
+    margin-top: 9px;
+}

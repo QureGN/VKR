@@ -4,8 +4,48 @@ import { Provider } from "react-redux"
 import App from "./App"
 import { store } from "./app/store"
 import "./index.css"
+import { NextUIProvider } from "@nextui-org/react"
+import { createBrowserRouter, RouterProvider } from "react-router-dom"
+import { sharedConfigRoutes } from "./shared/config";
+import { startPageUi } from "./pages/StartPage"
+import { FolderPageUi } from "./pages/Folder"
+import { BinaryPage } from "./pages/BinaryPage/ui/BinaryPage"
 
 const container = document.getElementById("root")
+const { RouteName } = sharedConfigRoutes;
+const { StartPage } = startPageUi;
+const {FolderPage} = FolderPageUi;
+
+// import { StartPage } from "./pages/StartPage/ui"
+
+const { STORAGE, START_PAGE, AUTH, REGISTRATION, FOLDER, TREES, BINARY } = RouteName;
+
+const router = createBrowserRouter([
+  {
+    path: START_PAGE,
+    element: <StartPage/>,
+},
+{
+    path: AUTH,
+    element: <h1> layout</h1>
+},
+{
+    path: REGISTRATION,
+    element: <h1> layout</h1>
+},
+{
+    path: FOLDER,
+    element: <FolderPage/>
+},
+{
+    path: TREES,
+    element: <h1> layout</h1>
+},
+{
+    path: BINARY,
+    element: <BinaryPage/>
+}
+])
 
 if (container) {
   const root = createRoot(container)
@@ -13,7 +53,11 @@ if (container) {
   root.render(
     <React.StrictMode>
       <Provider store={store}>
-        <App />
+        <NextUIProvider>
+        <RouterProvider router={router} />
+           
+        </NextUIProvider>
+        
       </Provider>
     </React.StrictMode>,
   )
