@@ -57,8 +57,28 @@ export const FileBinary: FunctionComponent<FileBinaryComponentProps> = (props) =
                 <FiMoreVertical color="white"/>
             </div>
             {filteredFiles.map(file => (
-                <FileCard file={file} key={file.pk} folder={folder}/>
-            ))}
+    <div key={file.pk}>
+        {(() => {
+            const suffixes = ["Б", "КБ", "МБ", "ГБ"];
+            let i = 0;
+            let fileSize = file.size; // Размер файла в байтах
+
+            while (fileSize >= 1024 && i < suffixes.length - 1) {
+                fileSize /= 1024.0;
+                i += 1;
+            }
+
+            return (
+                <FileCard
+                    file={file}
+                    size={`${fileSize.toFixed(2)} ${suffixes[i]}`}
+                    folder={folder}
+                    key={file.pk}
+                />
+            );
+        })()}
+    </div>
+))}
         </div>
     );
 }

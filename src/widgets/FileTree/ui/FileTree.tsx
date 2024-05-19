@@ -38,10 +38,10 @@ export const FileTree: FunctionComponent<FileBinaryComponentProps> = (props) =>{
     const {allTreeFiles} = props
 
     const handleClickdownload =()=>{
-        const csvData = Papa.unparse(allTreeFiles); // Используем библиотеку PapaParse для преобразования
+        const csvData = Papa.unparse(allTreeFiles, { encoding: 'utf-8' }); // Используем библиотеку PapaParse для преобразования
 
         // Создание и загрузка файла CSV
-        const blob = new Blob([csvData], { type: 'text/csv' });
+        const blob = new Blob([csvData], { type: 'text/csv; charset=utf-8' });
         const url = URL.createObjectURL(blob);
       
         // Создание ссылки для скачивания файла

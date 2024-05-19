@@ -1,5 +1,5 @@
 
-import { FunctionComponent } from "react";
+import { FunctionComponent, useEffect } from "react";
 import React, {useCallback, useState} from "react";
 import {Link, useNavigate} from "react-router-dom";
 import { FaFolder } from "react-icons/fa";
@@ -33,6 +33,7 @@ interface FileComponentProps {
     file: File;
     key: number;
     folder: string
+    size: string,
 }
 
 
@@ -52,12 +53,13 @@ interface FileTreeComponentProps {
     file: TreeFiles,
     key: number,
     
+    
 }
 
 const {ModalNewFile} = ModalNewFileUi;
 export const FileCard: FunctionComponent<FileComponentProps> = (props) =>{
 
-    const {file, folder} = props;
+    const {file, folder, size} = props;
     const navigate = useNavigate();
     
     const {isOpen, onOpen, onOpenChange} = useDisclosure();
@@ -72,6 +74,18 @@ export const FileCard: FunctionComponent<FileComponentProps> = (props) =>{
         onOpenChange();
         
     }
+    // useEffect(() => {
+    //     const suffixes = ["Б", "КБ", "МБ", "ГБ"];
+    //     let i = 0;
+    //     let fileSize = file.size; // Размер файла в байтах
+
+    //     while (fileSize >= 1024 && i < suffixes.length - 1) {
+    //         fileSize /= 1024.0;
+    //         i += 1;
+    //     }
+
+    //     setSize(`${fileSize.toFixed(2)} ${suffixes[i]}`);
+    // }, []);
 
     const handleClickDelete = () => {
         dispatch(removeBinaryFiles({name: file.name}))
@@ -107,7 +121,7 @@ export const FileCard: FunctionComponent<FileComponentProps> = (props) =>{
                     <h1>{file.name}</h1>
                 </div>
                 <div className="stroke">
-                    <h1>{file.size} б</h1>
+                    <h1>{size} </h1>
                 </div>
                 <div  className="stroke">
                     <h1>{formattedDate}</h1>

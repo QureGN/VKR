@@ -47,9 +47,9 @@ export const ModalEditTree: FunctionComponent<ModalProps> = ({ isOpen, onClose, 
 
       const handleClickOk = () => {
             
-        updateTree<newFolder>(folderId, treeNew)
+        updateTree<newFolder>(tree.pk.toString(), treeNew)
         .then((response) => {
-            dispatch(changeTree({id: Number(folderId), edit: treeNew}))
+            dispatch(changeTree({id: Number(tree.pk), edit: treeNew}))
             onClose()
             console.log('Дерево успешно изменено:', response.data);
         })
