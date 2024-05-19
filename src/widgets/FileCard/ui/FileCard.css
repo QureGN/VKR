@@ -5,6 +5,20 @@
     justify-content: space-between;
     height: 50px;
     align-items: center;
-    padding: 20px;
+    /* padding: 20px; */
     border-radius: 10px;
+}
+
+.header{
+    margin: 20px;
+    border-bottom:  1px solid black;
+    display: flex;
+    justify-content: space-between;
+    height: 50px;
+    align-items: center;
+    padding: 20px;
+}
+
+.stroke{
+    width: 150px;
 }

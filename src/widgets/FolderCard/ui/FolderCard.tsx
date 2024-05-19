@@ -7,8 +7,14 @@ import {useDispatch, useSelector} from "react-redux";
 import { FaPen } from "react-icons/fa";
 import {Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure, Checkbox, Input} from "@nextui-org/react";
 import "./FolderCard.css";
-import { ModalNewFolderUi } from "../../ModalNewFolder";
+import { ModalRenameFolderUi } from "../../ModalRenameFolder";
 import { sharedConfigRoutes } from "../../../shared/config";
+import { MdDelete } from "react-icons/md";
+import { deleteFolder } from "../../../shared/api";
+import { BinLib } from "../../../entities/Files";
+import { useAppDispatch, useAppSelector } from "../../../shared/lib/store";
+import { removeFolder, changeFolder, selectFolder, FolderTypes } from "../../../entities/Folders"; 
+
 
 const { RouteName } = sharedConfigRoutes;
 
@@ -18,7 +24,7 @@ const { BINARY } = RouteName;
 
 interface Folder {
     pk: number;
-    plot: string;
+    name_folder: string;
 }
 
 interface FolderComponentProps {
@@ -26,12 +32,12 @@ interface FolderComponentProps {
     key: number;
 }
 
-const {ModalNewFolder} = ModalNewFolderUi;
+const {ModalRenameFolder} = ModalRenameFolderUi;
 export const FolderCard: FunctionComponent<FolderComponentProps> = (props) =>{
 
+    const dispatch = useAppDispatch()
     const {folder} = props;
     const navigate = useNavigate();
-    const dispatch = useDispatch();
     const {isOpen, onOpen, onOpenChange} = useDisclosure();
     const [open, setOpen] = useState(false);
     
@@ -41,17 +47,41 @@ export const FolderCard: FunctionComponent<FolderComponentProps> = (props) =>{
         
     }
 
-    const GoToPageWithFiled = useCallback(() => {
-        navigate(BINARY);
-    }, [navigate]);
+    const handleClickDelete = () => {
+        
+        deleteFolder<Folder>(folder.pk, folder.name_folder)
+        .then((response) => {
+            dispatch(removeFolder({ pk: folder.pk }));
+            console.log('Папка успешно удалена:', response.data);
+        })
+        .catch((error) => {
+            console.error('Ошибка при удалении папки:', error);
+        });
+        
+    }
+
+    const GoToPageWithFiled = (event) => {
+      
+        const folderId = folder.pk
+        navigate({ pathname: BinLib.getBinPageUrl({ folderId }) });
+    };
+    
 
     return (
         <div>
-            <div className="card" onClick={GoToPageWithFiled}>
-                <FaFolder/>
-                <h1>{folder.plot}</h1>
+            <div className="card" > 
+                <div onClick={GoToPageWithFiled}>
+                    <FaFolder/>
+                    
+                </div>
+                <div onClick={GoToPageWithFiled} className="stroke">
+                    <h1>{folder.name_folder}</h1>
+                    
+                    
+                </div>
+                <MdDelete onClick={handleClickDelete}/>
                 <FaPen onClick={handleClick}/>
-                <ModalNewFolder isOpen={isOpen} onClose={onOpenChange} place={folder.plot}/>
+                <ModalRenameFolder isOpen={isOpen} onClose={onOpenChange} folder={folder}/>
                 
             </div>
 

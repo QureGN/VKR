@@ -7,7 +7,7 @@ export enum RouteName {
     STORAGE = '/storage',
     FOLDER = '/folders',
     TREES = '/trees',
-    BINARY = '/binary',
+    BINARY = '/binary/:folderId',
 }
 
 export interface RouteDescription {

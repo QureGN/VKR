@@ -1,0 +1,17 @@
+.cardTree{
+    display: flex;
+}
+
+.inscription{
+    margin-right: 50px;
+    width: 130px
+}
+
+.input{
+    margin-right: 20px;
+    width: 150px
+}
+
+.units{
+    width: 20px
+}

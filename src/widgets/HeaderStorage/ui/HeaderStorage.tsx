@@ -25,12 +25,13 @@ interface ButtonComponent {
     
     button: boolean;
     key: number;
+    folderName: string
 }
 
 
 export const HeaderStorage: FunctionComponent<ButtonComponent> = (props) => {
    
-    const {button} = props;
+    const {button, folderName} = props;
     const {isOpen, onOpen, onOpenChange} = useDisclosure();
     const [close, setClose] = useState(true);
     const [open, setOpen] = useState(false);
@@ -47,13 +48,12 @@ export const HeaderStorage: FunctionComponent<ButtonComponent> = (props) => {
                 
             </div>
             <img src={mainLogo} />
-            <div className='avat'>
+            {/* <div className='avat'>
                 <Avatar color="primary" name="ЮР" />
                 <div className='log'>Выйти</div>
                 <LuLogOut color="#D76445" size="20px" className='sv'/>
-            </div>
-           <ButtonHeaderStorage button ={button} key={1}/>
-           
+            </div> */}
+           <ButtonHeaderStorage button ={button} key={1} folderName={folderName}/>
             <div className='storage'>
                 <Link href="#" color="warning"> Хранилище <GrStorage color="#D76445" size="20px" className='plus'/>
                 </Link>

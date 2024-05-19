@@ -5,9 +5,11 @@ import { sharedConfigRoutes } from "../../../shared/config";
 import {Button} from "@nextui-org/react";
 import { ModalNewFolderUi } from "../../../widgets/ModalNewFolder";
 import { ModalNewFileUi } from '../../../widgets/ModalNewFile';
+import { ModalNewBinaryFileUi } from "../../../widgets/ModalNewBinaryFile";
 import {Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure, Checkbox, Input} from "@nextui-org/react";
 import { FaPlus } from "react-icons/fa6";
 
+const {ModalNewBinaryFile} = ModalNewBinaryFileUi
 const {ModalNewFile} = ModalNewFileUi;
 const {ModalNewFolder} = ModalNewFolderUi;
 const { RouteName } = sharedConfigRoutes;
@@ -17,9 +19,10 @@ interface ButtonComponent {
     
     button: boolean;
     key: number;
+    folderName: string
 }
 export const ButtonHeaderStorage: FunctionComponent<ButtonComponent> = (props) => {
-    const {button} = props;
+    const {button, key, folderName} = props;
     const {isOpen, onOpen, onOpenChange} = useDisclosure();
     const [close, setClose] = useState(true);
     const [open, setOpen] = useState(false);
@@ -41,9 +44,11 @@ export const ButtonHeaderStorage: FunctionComponent<ButtonComponent> = (props) =
                         </div>
                         
                         <FaPlus/>
-                        <ModalNewFile isOpen={isOpen} onClose={onOpenChange} place={"hh"}/>
-              
+                        
+                        {/* <ModalNewFile isOpen={isOpen} onClose={onOpenChange} place={"hh"} /> */}
+                        {/* <ModalNewBinaryFile isOpen={isOpen} onClose={onOpenChange}/> */}
                     </Button>
+                    <ModalNewFile isOpen={isOpen} onClose={onOpenChange} place={"hh"} folder={folderName}/>
                 </div> 
                 :
                 <div className='but'>
