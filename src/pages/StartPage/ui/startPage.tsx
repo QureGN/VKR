@@ -11,7 +11,7 @@ export const StartPage: FunctionComponent =() => {
         <div> 
             <Header/>
             <div className="text">Воспользуйтесь облачным хранилищем для Геоинформационной системы</div>
-            <ButtonStart/>
+            <ButtonStart name="Начать" click="start" style="button"/>
         </div>
     );
 }

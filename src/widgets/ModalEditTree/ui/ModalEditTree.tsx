@@ -5,6 +5,7 @@ import "./ModalEditTree.css"
 import { useParams } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from "../../../shared/lib/store";
 import { TreeTypes, selectTree, changeTree } from "../../../entities/Tree"; 
+import { getTokenFromCookie } from "../../../entities/User";
 
 interface TreeFiles{
     pk: number, 
@@ -46,8 +47,8 @@ export const ModalEditTree: FunctionComponent<ModalProps> = ({ isOpen, onClose, 
       };
 
       const handleClickOk = () => {
-            
-        updateTree<newFolder>(tree.pk.toString(), treeNew)
+        const token = getTokenFromCookie()   
+        updateTree<newFolder>(tree.pk.toString(), token, treeNew)
         .then((response) => {
             dispatch(changeTree({id: Number(tree.pk), edit: treeNew}))
             onClose()

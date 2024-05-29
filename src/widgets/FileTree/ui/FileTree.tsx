@@ -12,6 +12,7 @@ import {Button} from "@nextui-org/react";
 import * as Papa from "papaparse";
 import { FiMoreVertical } from "react-icons/fi";
 import "./FileTree.css"
+import { getTokenFromCookie } from "../../../entities/User";
 
 const { RouteName } = sharedConfigRoutes;
 const { BINARY } = RouteName;
@@ -38,6 +39,7 @@ export const FileTree: FunctionComponent<FileBinaryComponentProps> = (props) =>{
     const {allTreeFiles} = props
 
     const handleClickdownload =()=>{
+        
         const csvData = Papa.unparse(allTreeFiles, { encoding: 'utf-8' }); // Используем библиотеку PapaParse для преобразования
 
         // Создание и загрузка файла CSV

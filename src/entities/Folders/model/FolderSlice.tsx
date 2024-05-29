@@ -24,6 +24,15 @@ const folderSlice = createSlice({
             )
             state.folder[findItemIndex].name_folder = action.payload.name
         },
+        changeShare: (
+            state,
+            action: PayloadAction<{ id: number; shared: Array<number> }>
+        ) => {
+            const findItemIndex = state.folder?.findIndex(
+                (item) => item.pk === action.payload.id
+            )
+            state.folder[findItemIndex].shared = action.payload.shared
+        },
         newFolder: (
             state,
             action: PayloadAction<FolderTypes>
@@ -45,6 +54,6 @@ const folderSlice = createSlice({
     },
 })
 
-export const { addToFolders, changeFolder, newFolder, removeFolder } =
+export const { addToFolders, changeFolder, newFolder, removeFolder, changeShare } =
     folderSlice.actions
 export default folderSlice.reducer

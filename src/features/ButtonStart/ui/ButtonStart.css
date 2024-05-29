@@ -8,8 +8,29 @@
     text-decoration: none;
     margin-top: 50px ;
     margin-left:auto;
-    margin-right: auto;  
-    
+    margin-right: auto; 
+    text-decoration: none;
+    color: white;
+    font-size: 24px;
+    vertical-align: text-top;
+   
+}
+
+.buttonAuth{
+    max-width: 200px;
+    height: 40px;
+    background-color: #046245;
+    border-radius: 25px;
+    opacity: 0.38;
+    text-align: center;
+    text-decoration: none;
+    margin-top: 50px ;
+    margin-left:auto;
+    margin-right: auto; 
+    text-decoration: none;
+    color: white;
+    font-size: 15px;
+    vertical-align: text-top;
    
 }
 .textButton{

@@ -14,6 +14,8 @@ import { FaRegFile } from "react-icons/fa6";
 import { FaPen } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
 import { FaFolder } from "react-icons/fa";
+import { useNavigate } from 'react-router-dom';
+import { getTokenFromCookie } from "../../../entities/User";
 
 const {FolderCard} = FolderCardUi;
 const FOLDER = [{pk:1, plot:"Пермь"}, {pk:2, plot:"Москва"} ];
@@ -32,7 +34,7 @@ export const FolderPage: FunctionComponent =() => {
     const folders = useAppSelector<FolderTypes[]>(selectFolder)
     const dispatch = useAppDispatch()
     const [search, setSearch] = useState<string>('');
-
+    const navigate = useNavigate()
     const addBookToCart = () => {
         dispatch(addToFolders(allFolder))
         
@@ -54,8 +56,8 @@ export const FolderPage: FunctionComponent =() => {
 
     const [allFolder, setAllFolder] = useState<Folder[]>([]);
     useEffect(() => {
-
-        getAllFolders<Folder[]>()
+        const token = getTokenFromCookie()
+        getAllFolders<Folder[]>(token)
         .then((folder) => {
             setAllFolder(folder.data);
             dispatch(addToFolders(folder.data))
@@ -63,6 +65,7 @@ export const FolderPage: FunctionComponent =() => {
         })
         .catch((error) => {
             console.error('Ошибка при получении списка папок:', error);
+            navigate("/login")
         });
     }, []);
 

@@ -8,6 +8,7 @@ import { FaPen } from "react-icons/fa";
 import {Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure, Checkbox, Input, Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, } from "@nextui-org/react";
 import "./FileCard.css";
 import { ModalNewFileUi } from "../../ModalNewFile";
+import { ModalRenameFileUi } from "../../ModalRenameFile";
 import { sharedConfigRoutes } from "../../../shared/config";
 import { MdOutlineFileDownload } from "react-icons/md";
 import { FaRegFile } from "react-icons/fa6";
@@ -17,9 +18,10 @@ import axios from 'axios';
 import { saveAs } from 'file-saver';
 import { useAppDispatch, useAppSelector } from "../../../shared/lib/store";
 import { BinaryTypes, selectBinaryFiles, addToBinaryFiles, removeBinaryFiles } from "../../../entities/Files";
-
+import { getTokenFromCookie } from "../../../entities/User";
 import { IoMdMore } from "react-icons/io";
 const { RouteName } = sharedConfigRoutes;
+const {ModalRenameFile} = ModalRenameFileUi
 const { BINARY } = RouteName;
 
 interface File {
@@ -87,11 +89,18 @@ export const FileCard: FunctionComponent<FileComponentProps> = (props) =>{
     //     setSize(`${fileSize.toFixed(2)} ${suffixes[i]}`);
     // }, []);
 
+    const renameFile = () => {
+        setOpen(true);
+        onOpenChange();
+        
+    }
     const handleClickDelete = () => {
-        dispatch(removeBinaryFiles({name: file.name}))
-        deleteInMinio(folder, file.name)
+        
+        const token = getTokenFromCookie()
+        deleteInMinio(folder, file.name, token)
         .then((response) => {
             console.log('Файл успешно удален:', response.data);
+            dispatch(removeBinaryFiles({name: file.name}))
         })
         .catch((error) => {
             console.error('Ошибка при удалении файла:', error);
@@ -101,9 +110,13 @@ export const FileCard: FunctionComponent<FileComponentProps> = (props) =>{
 
     const downloadFileFromMinio = async () => {
         try {
+            const token = getTokenFromCookie()
             const response = await axios.get(`/download/${folder}/${file.name}/`, {
-              responseType: 'blob',
-            });
+                responseType: 'blob',
+                headers: {
+                  'Authorization': token
+                }
+              });
         
             const blob = new Blob([response.data], { type: response.headers['content-type'] });
             saveAs(blob, file.name);
@@ -111,6 +124,8 @@ export const FileCard: FunctionComponent<FileComponentProps> = (props) =>{
             console.error('Error downloading file:', error);
           }
 }
+
+
 
     return (
         <div>
@@ -127,7 +142,7 @@ export const FileCard: FunctionComponent<FileComponentProps> = (props) =>{
                     <h1>{formattedDate}</h1>
                 </div>
                 
-                
+                <ModalRenameFile isOpen={isOpen} onClose={onOpenChange} folder={folder} file = {file.name}/>
                 {/* <MdOutlineFileDownload size="25px" onClick={downloadFileFromMinio}/>
                 <FaPen onClick={handleClick}/>
                 <ModalNewFile isOpen={isOpen} onClose={onOpenChange} place={file.name} folder={folder}/>
@@ -143,6 +158,7 @@ export const FileCard: FunctionComponent<FileComponentProps> = (props) =>{
                         
                     >
                         <DropdownItem key="downloadFileFromMinio" onClick={downloadFileFromMinio}>Скачать файл</DropdownItem>
+                        <DropdownItem key="downloadFileFromMinio" onClick={renameFile}>Изменить название</DropdownItem>
                         
                         <DropdownItem key="handleClickDelete" onClick={handleClickDelete} className="text-danger" color="danger">
                         Удалить

@@ -17,6 +17,7 @@ import { useAppDispatch, useAppSelector } from "../../../shared/lib/store";
 import { TreeTypes, selectTree, removeTreeFiles } from "../../../entities/Tree"; 
 import { FiMoreVertical } from "react-icons/fi";
 import { IoMdMore } from "react-icons/io";
+import { getTokenFromCookie } from "../../../entities/User";
 
 const {ModalNewBinaryFile} = ModalNewBinaryFileUi
 const { RouteName } = sharedConfigRoutes;
@@ -67,8 +68,8 @@ export const TreeCard: FunctionComponent<FileTreeComponentProps> = (props) =>{
     }
 
     const handleClickDelete = () => {
-        
-        deleteTree(file.pk)
+        const token = getTokenFromCookie()
+        deleteTree(file.pk, token)
         .then((response) => {
             dispatch(removeTreeFiles({pk: file.pk}))
             console.log('Файл успешно удален:', response.data);

@@ -22,6 +22,21 @@ const binarySlice = createSlice({
             state.binaryFiles.push(action.payload) 
             return state
         },
+        renameFiles: (
+            state,
+            action: PayloadAction<{ old_name: string, new_name: string }>
+        ) => {
+            const { old_name, new_name } = action.payload;
+            const folderIndex = state.binaryFiles.findIndex(folder => folder.name === action.payload.old_name);
+          
+            if (folderIndex !== -1) {
+                state.binaryFiles[folderIndex] = {
+                    ...state.binaryFiles[folderIndex],
+                    name: action.payload.new_name
+                };
+            }
+            return state;
+        },
         removeBinaryFiles: (
             state,
             action: PayloadAction<{ name: string }>
@@ -36,6 +51,6 @@ const binarySlice = createSlice({
     },
 })
 
-export const { addToBinaryFiles, newBinaryFiles, removeBinaryFiles } =
+export const { addToBinaryFiles, newBinaryFiles, removeBinaryFiles, renameFiles } =
     binarySlice.actions
 export default binarySlice.reducer

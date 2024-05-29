@@ -10,11 +10,14 @@ import { sharedConfigRoutes } from "./shared/config";
 import { startPageUi } from "./pages/StartPage"
 import { FolderPageUi } from "./pages/Folder"
 import { BinaryPage } from "./pages/BinaryPage/ui/BinaryPage"
-
+import { LoginPageUi } from "./pages/LoginPage"
+import { RegistartionPageUi } from "./pages/RegistrationPage"
 const container = document.getElementById("root")
 const { RouteName } = sharedConfigRoutes;
 const { StartPage } = startPageUi;
 const {FolderPage} = FolderPageUi;
+const {LoginPage} = LoginPageUi
+const {RegistrationPage} = RegistartionPageUi
 
 // import { StartPage } from "./pages/StartPage/ui"
 
@@ -27,11 +30,11 @@ const router = createBrowserRouter([
 },
 {
     path: AUTH,
-    element: <h1> layout</h1>
+    element: <LoginPage/>
 },
 {
     path: REGISTRATION,
-    element: <h1> layout</h1>
+    element: <RegistrationPage/>
 },
 {
     path: FOLDER,

@@ -40,9 +40,9 @@ export const Header: FunctionComponent = () => {
 
     return (
         <div className="navbar">
-            <img src={mainLogo} />
-            <div>
-                {/* <ButtonHeader/> */}
+            {/* <img src={mainLogo} /> */}
+            <div className="menu">
+                <ButtonHeader/>
             </div>
         </div>
     );

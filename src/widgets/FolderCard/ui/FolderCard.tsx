@@ -14,6 +14,9 @@ import { deleteFolder } from "../../../shared/api";
 import { BinLib } from "../../../entities/Files";
 import { useAppDispatch, useAppSelector } from "../../../shared/lib/store";
 import { removeFolder, changeFolder, selectFolder, FolderTypes } from "../../../entities/Folders"; 
+import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, } from "@nextui-org/react";
+import { getTokenFromCookie } from "../../../entities/User";
+
 
 
 const { RouteName } = sharedConfigRoutes;
@@ -40,16 +43,17 @@ export const FolderCard: FunctionComponent<FolderComponentProps> = (props) =>{
     const navigate = useNavigate();
     const {isOpen, onOpen, onOpenChange} = useDisclosure();
     const [open, setOpen] = useState(false);
+    const [act, setAct] = useState("")
     
-    const handleClick = () => {
+    const handleClick = (click:string) => {
         setOpen(true);
         onOpenChange();
-        
+        setAct(click)
     }
 
     const handleClickDelete = () => {
-        
-        deleteFolder<Folder>(folder.pk, folder.name_folder)
+        const token = getTokenFromCookie()
+        deleteFolder<FolderTypes>(folder.pk, folder.name_folder, token)
         .then((response) => {
             dispatch(removeFolder({ pk: folder.pk }));
             console.log('Папка успешно удалена:', response.data);
@@ -79,10 +83,28 @@ export const FolderCard: FunctionComponent<FolderComponentProps> = (props) =>{
                     
                     
                 </div>
-                <MdDelete onClick={handleClickDelete}/>
-                <FaPen onClick={handleClick}/>
-                <ModalRenameFolder isOpen={isOpen} onClose={onOpenChange} folder={folder}/>
-                
+                {/* <MdDelete onClick={handleClickDelete}/>
+                <FaPen onClick={() => handleClick("edit")}/> */}
+                <ModalRenameFolder isOpen={isOpen} onClose={onOpenChange} folder={folder} act={act}/>
+
+                <Dropdown>
+                    <DropdownTrigger>
+                        
+                       {/* <FiMoreVertical /> */}
+                       {/* <IoMdMore/> */}
+                       <div font-size="20px">...</div>
+                    </DropdownTrigger>
+                    <DropdownMenu 
+                        
+                    >
+                        <DropdownItem key="downloadFileFromMinio" onClick={() => handleClick("edit")}>Изменить название</DropdownItem>
+                        <DropdownItem key="downloadFileFromMinio" onClick={() => handleClick("share")}>Поделиться доступом</DropdownItem>
+                        
+                        <DropdownItem key="handleClickDelete" onClick={handleClickDelete} className="text-danger" color="danger">
+                         Удалить
+                        </DropdownItem>
+                    </DropdownMenu>
+                </Dropdown>
             </div>
 
             

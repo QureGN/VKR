@@ -22,6 +22,7 @@ import { combineReducers, configureStore } from '@reduxjs/toolkit'
 import { FolderReducer } from '../entities/Folders'
 import { BinaryReducer } from '../entities/Files'
 import { TreeReducer } from '../entities/Tree'
+import { UserReducer } from '../entities/User' 
 
 import {
     FLUSH,
@@ -38,7 +39,8 @@ import storage from 'redux-persist/lib/storage'
 const rootReducer = combineReducers({
     folder: FolderReducer,
     binaryFiles: BinaryReducer,
-    treeFiles: TreeReducer
+    treeFiles: TreeReducer,
+    user: UserReducer
 })
 
 const persistConfig = {

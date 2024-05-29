@@ -7,6 +7,7 @@ import { useParams } from 'react-router-dom';
 import { BinaryTypes, selectBinaryFiles, newBinaryFiles } from "../../../entities/Files";
 import { useAppDispatch, useAppSelector } from "../../../shared/lib/store";
 import { TreeTypes, selectTree, newTreeFiles } from "../../../entities/Tree"; 
+import { getTokenFromCookie } from "../../../entities/User";
 
 interface ModalProps {
     isOpen: boolean;
@@ -33,18 +34,29 @@ export const ModalNewFile: FunctionComponent<ModalProps> = ({ isOpen, onClose, p
     };
 
     const handleFileUpload = async (event) => {
-        
+        const token =  getTokenFromCookie()
         if (selectedFormat == "csv"){
+            if (selectedFile.type !== 'text/csv') {
+                alert('Неверный формат файла');
+                return;
+            }
+            
             const file = selectedFile;
+            // if (file.type !== selectedFormat) {
+            //     alert('Неверный формат файла');
+            //     return;
+            //     }
             const reader = new FileReader();
-
+           
             reader.onload = function(e) {
                 const csv = e.target.result;
                 const jsonData = Papa.parse(csv, { header: true }).data;
                 console.log(jsonData);
                 jsonData.map(tree => {
-                    dispatch(newTreeFiles(tree))
-                    createTree(tree)
+                    tree.folder_pk = folderId
+                    createTree(token, tree).then((response)=>{
+                        dispatch(newTreeFiles(response.data))
+                    })
                 })
             };
 
@@ -53,11 +65,19 @@ export const ModalNewFile: FunctionComponent<ModalProps> = ({ isOpen, onClose, p
 
         }else{
             //  для двличных файлов
+            if (selectedFile.name.split(".")[1] !== 'obj' && selectedFile.name.split(".")[1] !== 'las') {
+                alert('Неверный формат файла');
+                
+                return;
+            }
             const file = selectedFile
+             // Проверка типа файла
+            
+            
             const formData = new FormData();
             formData.append('file', file);
             try {
-                const response = await uploadInMinio(folder, formData);
+                const response = await uploadInMinio(folder, token, formData);
                 console.log(response.data)
                 dispatch(newBinaryFiles(response.data.files))
                 onClose()

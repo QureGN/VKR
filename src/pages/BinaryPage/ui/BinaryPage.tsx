@@ -25,6 +25,8 @@ const {TreeCard} = TreeCardUi
 const {FileCard} = FileCardUi;
 const FILE = [{pk:1, name:"tree1.las", size:"500"}, {pk:2, name:"tree2.las", size:"555"} ];
 const {HeaderStorage} = HeaderStorageUi;
+import { getTokenFromCookie } from "../../../entities/User";
+import { FolderTypes } from "../../../entities/Folders";
 
 interface BinFiles {
     pk: number;
@@ -66,11 +68,12 @@ export const BinaryPage: FunctionComponent =() => {
     const dispatch = useAppDispatch()
 
     useEffect(() => {
-        getFolderById<Folder>(Number(folderId))
+        const token = getTokenFromCookie()
+        getFolderById<FolderTypes>(Number(folderId), token)
         .then((folder)=> {
             const folderName = folder.data.name_folder.toLowerCase()
             setFolderName(folderName)
-            getFolderByIdBinary<BinFiles[]>(folderName)
+            getFolderByIdBinary<BinFiles[]>(folderName, token)
             .then((files)=>{
                 setAllBinFiles(files.data)
                 setAllBinFiles1(files.data)
@@ -78,10 +81,11 @@ export const BinaryPage: FunctionComponent =() => {
                 dispatch(addToBinaryFiles(files.data))
             })
         })
-        getFolderByIdTree<TreeFiles[]>(Number(folderId))
+        getFolderByIdTree<TreeFiles[]>(Number(folderId), token)
         .then((folder) => {
-            setAllTreeFiles(folder.data); 
-            dispatch(addToTreeFiles(folder.data))
+            console.log(folder.data)
+            // setAllTreeFiles(folder.data); 
+            // dispatch(addToTreeFiles(folder.data))
         })
         .catch((error) => {
             console.error('Ошибка при получении списка папок:', error);
@@ -89,10 +93,11 @@ export const BinaryPage: FunctionComponent =() => {
     }, []);
 
     const handleSearch =(event)=>{
+        const token = getTokenFromCookie()
         const searchQuery = event.target.value; // Получаем значение из инпута поиска
         console.log(search)
         setSearch(searchQuery); // Обновляем состояние search с новым значением
-        searchBinFiles<BinFiles[]>(folderName, search)
+        searchBinFiles<BinFiles[]>(folderName, search, token)
         .then((files)=>{
             setAllBinFiles(files.data)
             setAllTreeFiles(files.data)
@@ -100,8 +105,9 @@ export const BinaryPage: FunctionComponent =() => {
             dispatch(addToBinaryFiles(files.data))
         })
       
-        searchTreeFiles<TreeFiles[]>(Number(folderId), search)
+        searchTreeFiles<TreeFiles[]>(Number(folderId), search, token)
         .then((folder) => {
+            
             // setAllTreeFiles(folder.data); 
             dispatch(addToTreeFiles(folder.data))
         })

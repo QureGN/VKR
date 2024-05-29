@@ -1,0 +1,1 @@
+export * as RegistartionPageUi from "./ui"
